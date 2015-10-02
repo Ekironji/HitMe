@@ -31,7 +31,7 @@ import me.palazzetti.adktoolkit.response.AdkMessage;
 
 public class HitmeMainActivity extends Activity {
 
-    private boolean IS_DEBUG = false;
+    private boolean IS_DEBUG = true;
 
     // ADK needed
     private AdkManager mAdkManager;
@@ -123,14 +123,31 @@ public class HitmeMainActivity extends Activity {
         protected Void doInBackground(Void... params) {
 //	    	Log.i("ADK demo bi", "start adkreadtask");
             while(running) {
-                AdkMessage response = mAdkManager.read();
-                System.out.println(response.getString());
-                publishProgress(response.getString());
+                AdkMessage response = null;
+                try {
+                    response = mAdkManager.read();
+                    publishProgress(response.getString());
+                }
+                catch (Exception e) {
+                    Log.w("doInBackGround","No adk available");
+                }
             }
             return null;
         }
 
         protected void onProgressUpdate(String... progress) {
+            if(progress[0].equals("d")){
+                langButtonPressed(1);
+            }
+            else if(progress[0].equals("s")){
+                langButtonPressed(2);
+            }
+            else if(progress[0].equals("u") || progress[0].equals("g")){
+                langButtonPressed(3);
+            }
+            else if(progress[0].equals("i") || progress[0].equals("a")){
+                langButtonPressed(4);
+            }
         }
     }
 
