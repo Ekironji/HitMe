@@ -1,0 +1,90 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HitmeMainActivityFragment"
+    android:id="@+id/relativeLayout">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/background"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/main"
+        android:scaleType="fitXY"/>
+
+    <TextView android:text="bestscore"
+        android:id="@+id/bestscore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30dp"
+        android:textColor="#cccccc"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="HIT TO START"
+        android:id="@+id/centerText"
+        android:layout_below="@+id/bestscore"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="77dp"
+        android:textSize="80dp"
+        android:textColor="#cccccc"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:weightSum="1"
+        android:layout_marginBottom="46dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true">
+
+        <ImageButton
+            android:layout_width="88dp"
+            android:layout_height="88dp"
+            android:id="@+id/language1"
+            android:layout_weight="0.25"
+            android:src="@drawable/it"
+            android:scaleType="fitXY" />
+
+        <ImageButton
+            android:layout_width="88dp"
+            android:layout_height="88dp"
+            android:id="@+id/language2"
+            android:layout_weight="0.25"
+            android:src="@drawable/gb"
+            android:scaleType="fitXY" />
+
+        <ImageButton
+            android:layout_width="88dp"
+            android:layout_height="88dp"
+            android:id="@+id/language3"
+            android:layout_weight="0.25"
+            android:src="@drawable/rome"
+            android:scaleType="fitXY" />
+
+
+        <ImageButton
+            android:layout_width="88dp"
+            android:layout_height="88dp"
+            android:id="@+id/language4"
+            android:layout_weight="0.25"
+            android:src="@drawable/it"
+            android:scaleType="fitXY" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TimeLeft"
+        android:id="@+id/timeTextView"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:textSize="20dp"
+        android:textColor="#cccccc"/>
+
+
+</RelativeLayout>
