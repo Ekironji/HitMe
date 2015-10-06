@@ -125,18 +125,6 @@ public class Sounds {
             }
         });
 
-/*
-        for (int i = 0; i < 19; i++)
-            mGioSounds.add(new SoundPool(1, audioManager.STREAM_MUSIC, 0));
-
-        for (int i = 0; i < 10; i++)
-            mRizzoSounds.add(new SoundPool(1, audioManager.STREAM_MUSIC, 0));
-
-        for (int i = 0; i < 13; i++)
-            mSbarbySounds.add(new SoundPool(1, audioManager.STREAM_MUSIC, 0));
-
-        for (int i = 0; i < 4; i++)
-            mXSounds.add(new SoundPool(1, audioManager.STREAM_MUSIC, 0));*/
 
         for (int i = 0; i < voiceGio.length; i++)
             mGioSounds.add(soundPoolGio.load(mContext, voiceGio[i], 1));
@@ -157,9 +145,13 @@ public class Sounds {
         soundPoolGio.play(mGioSounds.get(s), 0.8f, 0.8f, 0, 0, 1.0f);
     }
 
-
     public void playSbarbySound() {
-        int s = (int)(Math.random() * voiceGio.length);
+        int s = (int)(Math.random() * voiceSbarby.length);
         soundPoolSbarby.play(mSbarbySounds.get(s), 0.8f, 0.8f, 0, 0, 1.0f);
+    }
+
+    public void playRizzoSound() {
+        int s = (int)(Math.random() * voiceRizzo.length);
+        soundPoolRizzo.play(mRizzoSounds.get(s), 0.8f, 0.8f, 0, 0, 1.0f);
     }
 }

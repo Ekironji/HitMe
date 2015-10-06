@@ -25,10 +25,10 @@ public class HitmeGame extends Thread {
 //    private final int DOWN_HIT  = 5;
 //    private final int BACK_HIT  = 6;
 
-    private int STANDBY = 0;
-    private int PREMATCH = 1;
-    private int STARTMATCH = 2;
-    private int GAMEOVER = 3;
+    public static final int STANDBY    = 0;
+    public static final int PREMATCH   = 1;
+    public static final int STARTMATCH = 2;
+    public static final int GAMEOVER   = 3;
 
     private int timeLimit   = 20;
 
@@ -52,7 +52,8 @@ public class HitmeGame extends Thread {
     private int  activeHit   =  0;
     private long lastHitTime = -1;
 
-    private boolean isTerminated = false;
+    private boolean isTerminated  = false;
+    private boolean canReciveHits = false;
 
 
     private HitmeMainActivity mainActivity = null;
@@ -97,6 +98,8 @@ public class HitmeGame extends Thread {
             e.printStackTrace();
         }
 
+        canReciveHits = true;
+
         time = System.currentTimeMillis();
         startTime = time;
         endTime = startTime + timeLimit * 1000;
@@ -122,7 +125,6 @@ public class HitmeGame extends Thread {
                 }
             }
 
-
             // pause
             try {
                 Thread.sleep(UPDATE_TIME);
@@ -134,18 +136,15 @@ public class HitmeGame extends Thread {
 
         gameOver();
 
-        changeStatus(GAMEOVER);
-        try {
-            Thread.sleep(2000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        sendFace("HIT TO START");
-        changeStatus(STANDBY);
+
 
     }
 
     public int moveRecieved(int move){
+
+        if(!canReciveHits)
+            return points;
+
         if(activeHit != 0){
             removeHit();
             points += SLOW_HIT_POINT;
@@ -214,10 +213,19 @@ public class HitmeGame extends Thread {
     }
 
 
-    private void gameOver(){
+    private void gameOver() {
         Log.w("gameOver", "GAME OVERRRR");
         sendFace("GAME OVER\n" + points);
+        changeStatus(GAMEOVER);
+        try {
+            Thread.sleep(4000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        sendFace("HIT TO START");
+        changeStatus(STANDBY);
         isTerminated = true;
+        canReciveHits = false;
     }
 
     private void sendFace(String face){
@@ -230,7 +238,7 @@ public class HitmeGame extends Thread {
     private void sendFace(int face){
         Message m = mHandler.obtainMessage();
         m.arg1 = 1;
-        m.obj = "" + face;
+        m.obj = "( " + face + " )";
         mHandler.sendMessage(m);
     }
 

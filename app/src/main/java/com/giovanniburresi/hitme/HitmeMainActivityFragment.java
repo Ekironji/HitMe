@@ -17,18 +17,18 @@ import android.widget.TextView;
  */
 public class HitmeMainActivityFragment extends Fragment {
 
-    HitmeMainActivity mainActivity = null;
+    private HitmeMainActivity mainActivity = null;
 
-    ImageButton itaButton = null;
-    ImageButton engButton = null;
-    ImageButton romButton = null;
-    ImageButton ita2Button = null;
+    private ImageButton itaButton = null;
+    private ImageButton engButton = null;
+    private ImageButton romButton = null;
+    private ImageButton ita2Button = null;
 
-    ImageView background = null;
+    private ImageView background = null;
 
-    TextView scoreTextView = null;
-    TextView centerTextView = null;
-    TextView timeTextView = null;
+    private TextView scoreTextView = null;
+    private TextView centerTextView = null;
+    private TextView timeTextView = null;
 
 
     public HitmeMainActivityFragment() {
@@ -87,11 +87,14 @@ public class HitmeMainActivityFragment extends Fragment {
 
     private void buttonPressed(int lang){
         mainActivity.langButtonPressed(lang);
-
     }
 
-    public void setHighScore(int score){
+    public void setScoreLabel(int score){
         scoreTextView.setText("SCORE : " + score);
+    }
+
+    public void setScoreLabel(String s){
+        scoreTextView.setText(s);
     }
 
     public void setCenterTextView(String s){
@@ -100,6 +103,10 @@ public class HitmeMainActivityFragment extends Fragment {
 
     public void setRightTextView(int time){
         timeTextView.setText(time/1000 + " seconds left");
+    }
+
+    public void setRightTextView(String s){
+        timeTextView.setText(s);
     }
 
     public void standby(){

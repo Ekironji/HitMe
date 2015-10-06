@@ -1,30 +1,21 @@
 package com.giovanniburresi.hitme;
 
 import android.app.Activity;
-import android.app.Fragment;
-import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import android.hardware.usb.UsbAccessory;
 import android.hardware.usb.UsbManager;
-import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import com.giovanniburresi.hitme.game.HitmeGame;
+import com.giovanniburresi.hitme.sounds.Sounds;
 
-import java.io.FileDescriptor;
-import java.io.FileInputStream;
+import java.util.ArrayList;
 
 import me.palazzetti.adktoolkit.AdkManager;
 import me.palazzetti.adktoolkit.response.AdkMessage;
@@ -42,7 +33,11 @@ public class HitmeMainActivity extends Activity {
 
     // Game dynamics
     HitmeGame mHitmeGame = null;
+    ArrayList<HitmeGame> mGames = null;
 
+    Sounds mSounds = null;
+
+    int highScore = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,16 +49,16 @@ public class HitmeMainActivity extends Activity {
 
         mMainFragment = new HitmeMainActivityFragment();
 
+        mGames = new ArrayList<HitmeGame>();
 
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
                     .add(R.id.container, mMainFragment)
                     .commit();
         }
+
+        mSounds = new Sounds(this);
     }
-
-
-
 
     @Override
     public void onResume() {
@@ -162,11 +157,29 @@ public class HitmeMainActivity extends Activity {
             if(id == 1)
                 mMainFragment.setCenterTextView(status);
             if(id == 2)
-                mMainFragment.setHighScore(arg2);
+                mMainFragment.setScoreLabel(arg2);
             if(id == 3)
                 mMainFragment.setRightTextView(arg2);
-            if(id == 4)
+            if(id == 4) {
                 mMainFragment.changeBackground(arg2);
+
+                switch (arg2) {
+                    case HitmeGame.STANDBY:
+                        mMainFragment.setCenterTextView("Hit me sto start! \nHIGHSCORE " + getHighscore());
+                        mMainFragment.setRightTextView("");
+                        mMainFragment.setScoreLabel("");
+                        break;
+                    case HitmeGame.PREMATCH:
+
+                        break;
+                    case HitmeGame.STARTMATCH:
+
+                        break;
+                    case HitmeGame.GAMEOVER:
+
+                        break;
+                }
+            }
         }
     };
 
@@ -177,13 +190,24 @@ public class HitmeMainActivity extends Activity {
 
         if(mHitmeGame == null || mHitmeGame.isTerminated()) {
             mHitmeGame = new HitmeGame(this, handler);
+            mGames.add(mHitmeGame);
             mHitmeGame.start();
         }
         else{
             mHitmeGame.moveRecieved(lang);
+            mSounds.playSbarbySound();
+        }
+    }
+
+    public int getHighscore(){
+        int max = 0;
+
+        for(HitmeGame h : mGames){
+            if(h.getPoints() > max){
+                max = h.getPoints();
+            }
         }
 
-
-
+        return max;
     }
 }
