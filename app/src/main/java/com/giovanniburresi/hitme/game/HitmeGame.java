@@ -20,8 +20,8 @@ public class HitmeGame extends Thread {
 
     private final int RIGHT_HIT = 1;
     private final int LEFT_HIT  = 2;
-    private final int FRONT_HIT = 3;
-    private final int UP_HIT    = 4;
+    private final int UP_HIT = 3;
+    private final int FRONT_HIT    = 4;
 //    private final int DOWN_HIT  = 5;
 //    private final int BACK_HIT  = 6;
 
@@ -37,7 +37,7 @@ public class HitmeGame extends Thread {
 
     private int HIT_DURATION = 1000;
 
-    private float MOVE_RATE = 0.05f;
+    private float MOVE_RATE = 0.03f;
 
     private int points = 0;
 
@@ -80,17 +80,17 @@ public class HitmeGame extends Thread {
     @Override
     public void run(){
 
-        sendFace("READY ?!");
+        changeCenterText("READY ?!");
         changeStatus(PREMATCH);
         for(int i=3; i>0; i--){
-            sendFace("" + i);
+            changeCenterText("" + i);
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-        sendFace("FIGHT !");
+        changeCenterText("FIGHT !");
         changeStatus(STARTMATCH);
         try {
             Thread.sleep(1000);
@@ -141,16 +141,19 @@ public class HitmeGame extends Thread {
     }
 
     public int moveRecieved(int move){
-
         if(!canReciveHits)
             return points;
 
         if(activeHit != 0){
+
+            notifyHit();
+
             removeHit();
             points += SLOW_HIT_POINT;
 
-            if(move == activeHit)
+            if(move == activeHit) {
                 points += FAST_HIT_POINT;
+            }
 
             // controllo se veloce
             if(System.currentTimeMillis() - lastHitTime < FAST_GAP)
@@ -162,14 +165,17 @@ public class HitmeGame extends Thread {
                     points += DIRECTION_HIT_POINT;
                 else if(move == LEFT_HIT)
                     points += AXIS_HIT_POINT;
+
             else if(activeHit == LEFT_HIT)
                 if(move == LEFT_HIT)
                     points += DIRECTION_HIT_POINT;
                 else if(move == RIGHT_HIT)
                     points += AXIS_HIT_POINT;
         }
-        else
+        else {
             points -= 50;
+            notifyMiss();
+        }
 
         sendPoints();
         Log.i("moveRecieved", "Points: " + points);
@@ -201,44 +207,40 @@ public class HitmeGame extends Thread {
         }
     }
 
+
+
     private void setHit(int hit){
         activeHit = hit;
-        sendFace(activeHit);
+        changeFace(activeHit);
     }
 
     private void removeHit(){
         activeHit = 0;
-        sendFace(activeHit);
+        changeFace(activeHit);
         sendPoints();
     }
 
 
+
     private void gameOver() {
         Log.w("gameOver", "GAME OVERRRR");
-        sendFace("GAME OVER\n" + points);
+        changeCenterText("GAME OVER\n" + points);
         changeStatus(GAMEOVER);
         try {
             Thread.sleep(4000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        sendFace("HIT TO START");
+        changeCenterText("HIT TO START");
         changeStatus(STANDBY);
         isTerminated = true;
         canReciveHits = false;
     }
 
-    private void sendFace(String face){
+    private void changeCenterText(String face){
         Message m = mHandler.obtainMessage();
         m.arg1 = 1;
         m.obj = face;
-        mHandler.sendMessage(m);
-    }
-
-    private void sendFace(int face){
-        Message m = mHandler.obtainMessage();
-        m.arg1 = 1;
-        m.obj = "( " + face + " )";
         mHandler.sendMessage(m);
     }
 
@@ -256,11 +258,31 @@ public class HitmeGame extends Thread {
         mHandler.sendMessage(m);
     }
 
-
     private void changeStatus(int status){
         Message m = mHandler.obtainMessage();
         m.arg1 = 4;
         m.arg2 = status;
+        mHandler.sendMessage(m);
+    }
+
+    private void changeFace(int face){
+        Message m = mHandler.obtainMessage();
+        m.arg1 = 5;
+        m.arg2 = face;
+        mHandler.sendMessage(m);
+    }
+
+    private void notifyHit(){
+        Message m = mHandler.obtainMessage();
+        m.arg1 = 6;
+        m.arg2 = activeHit;
+        mHandler.sendMessage(m);
+    }
+
+    private void notifyMiss(){
+        Message m = mHandler.obtainMessage();
+        m.arg1 = 7;
+        m.arg2 = activeHit;
         mHandler.sendMessage(m);
     }
 

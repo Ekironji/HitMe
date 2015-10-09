@@ -12,6 +12,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.giovanniburresi.hitme.game.*;
+import com.giovanniburresi.hitme.game.Character;
+
 /**
  * A placeholder fragment containing a simple view.
  */
@@ -102,26 +105,32 @@ public class HitmeMainActivityFragment extends Fragment {
     }
 
     public void setRightTextView(int time){
-        timeTextView.setText(time/1000 + " seconds left");
+        timeTextView.setText(time / 1000 + " seconds left");
     }
 
     public void setRightTextView(String s){
         timeTextView.setText(s);
     }
 
+
+
     public void standby(){
         Log.i("startMatch", "standby");
         background.setImageResource(R.drawable.main);
+        setCenterTextView("hit me to start! \nHIGHSCORE " + mainActivity.getHighscore());
+        setRightTextView("");
+        setScoreLabel("");
     }
 
     public void preMatch(){
         Log.i("startMatch", "preMatch");
-        background.setImageResource(R.drawable.roundone);
+        background.setImageResource(Character.getCountdown(Character.RYU, 3));
+        //
     }
 
     public void startMatch(){
         Log.i("startMatch", "startMatch");
-        background.setImageResource(R.drawable.ring);
+        arrowNo();
     }
 
     public void gameover(){
@@ -140,5 +149,60 @@ public class HitmeMainActivityFragment extends Fragment {
             gameover();
 
     }
+
+
+    int selectedCharacter = Character.RYU;
+
+    // Animations
+    public void arrow(int arrow){
+        switch(arrow){
+            case 0:
+                arrowNo();
+                break;
+            case 1:
+                arrowRight();
+                break;
+            case 2:
+                arrowLeft();
+                break;
+            case 3:
+                arrowTop();
+                break;
+            case 4:
+                arrowFront();
+                break;
+        }
+    }
+
+    public void arrowTop(){
+        background.setImageResource(Character.getFreccia(selectedCharacter, Character.TOP, 0));
+    }
+
+    public void arrowFront(){
+        background.setImageResource(Character.getFreccia(selectedCharacter, Character.CENTER, 0));
+    }
+
+    public void arrowLeft(){
+        background.setImageResource(Character.getFreccia(selectedCharacter, Character.LEFT, 0));
+    }
+
+    public void arrowRight(){
+        background.setImageResource(Character.getFreccia(selectedCharacter, Character.RIGHT, 0));
+    }
+
+    public void arrowNo(){
+        background.setImageResource(Character.getCountdown(selectedCharacter, 0));
+    }
+
+
+    public void hitOk (int position){
+        background.setImageResource(Character.getHitMiss(selectedCharacter, Character.CENTER, 0));
+    }
+
+    public void hitMissed (int position){
+        background.setImageResource(Character.getHitMiss(selectedCharacter, Character.CENTER, 1));
+    }
+
+
 
 }

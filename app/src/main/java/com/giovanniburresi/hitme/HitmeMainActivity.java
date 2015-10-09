@@ -154,22 +154,23 @@ public class HitmeMainActivity extends Activity {
             int id   = msg.arg1;
             int arg2 = msg.arg2;
 
-            if(id == 1)
+            if(id == 1) // etichetta centrale
                 mMainFragment.setCenterTextView(status);
-            if(id == 2)
+            else if(id == 2) // etichetta punteggio
                 mMainFragment.setScoreLabel(arg2);
-            if(id == 3)
+            else if(id == 3) // etichetta tempo
                 mMainFragment.setRightTextView(arg2);
-            if(id == 4) {
+
+            else if(id == 4) { // cambio sati
                 mMainFragment.changeBackground(arg2);
 
                 switch (arg2) {
                     case HitmeGame.STANDBY:
-                        mMainFragment.setCenterTextView("Hit me sto start! \nHIGHSCORE " + getHighscore());
-                        mMainFragment.setRightTextView("");
-                        mMainFragment.setScoreLabel("");
+                        mMainFragment.standby();
+
                         break;
                     case HitmeGame.PREMATCH:
+                        mMainFragment.preMatch();
 
                         break;
                     case HitmeGame.STARTMATCH:
@@ -179,6 +180,15 @@ public class HitmeMainActivity extends Activity {
 
                         break;
                 }
+            }
+            else if(id == 5){  // new
+                mMainFragment.arrow(arg2);
+            }
+            else if(id == 6) { // notifyHit
+                mMainFragment.hitOk(arg2);
+            }
+            else if(id == 7) { // notifyMiss
+                mMainFragment.hitMissed(arg2);
             }
         }
     };
