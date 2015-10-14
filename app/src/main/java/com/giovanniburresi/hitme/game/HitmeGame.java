@@ -136,8 +136,6 @@ public class HitmeGame extends Thread {
 
         gameOver();
 
-
-
     }
 
     public int moveRecieved(int move){
@@ -146,13 +144,15 @@ public class HitmeGame extends Thread {
 
         if(activeHit != 0){
 
-            notifyHit();
-
             removeHit();
             points += SLOW_HIT_POINT;
 
             if(move == activeHit) {
                 points += FAST_HIT_POINT;
+                notifyHit();
+            }
+            else{
+                notifyMiss();
             }
 
             // controllo se veloce
@@ -174,7 +174,6 @@ public class HitmeGame extends Thread {
         }
         else {
             points -= 50;
-            notifyMiss();
         }
 
         sendPoints();
@@ -264,6 +263,7 @@ public class HitmeGame extends Thread {
         m.arg2 = status;
         mHandler.sendMessage(m);
     }
+
 
     private void changeFace(int face){
         Message m = mHandler.obtainMessage();

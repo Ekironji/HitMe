@@ -145,13 +145,25 @@ public class Sounds {
         soundPoolGio.play(mGioSounds.get(s), 0.8f, 0.8f, 0, 0, 1.0f);
     }
 
+    public void playRizzoSound() {
+        int s = (int)(Math.random() * voiceRizzo.length);
+        soundPoolRizzo.play(mRizzoSounds.get(s), 0.8f, 0.8f, 0, 0, 1.0f);
+    }
+
+
+
     public void playSbarbySound() {
         int s = (int)(Math.random() * voiceSbarby.length);
         soundPoolSbarby.play(mSbarbySounds.get(s), 0.8f, 0.8f, 0, 0, 1.0f);
     }
 
-    public void playRizzoSound() {
-        int s = (int)(Math.random() * voiceRizzo.length);
-        soundPoolRizzo.play(mRizzoSounds.get(s), 0.8f, 0.8f, 0, 0, 1.0f);
+    public void playSbarbyHitSound() {
+        int s = (int)(Math.random() * 5);
+        soundPoolSbarby.play(mSbarbySounds.get(s), 0.8f, 0.8f, 0, 0, 1.0f);
+    }
+
+    public void playSbarbyMissSound() {
+        int s = (int)(Math.random() * 7);
+        soundPoolSbarby.play(mSbarbySounds.get(s+5), 0.8f, 0.8f, 0, 0, 1.0f);
     }
 }

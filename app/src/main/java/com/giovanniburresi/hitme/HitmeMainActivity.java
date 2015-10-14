@@ -162,50 +162,44 @@ public class HitmeMainActivity extends Activity {
                 mMainFragment.setRightTextView(arg2);
 
             else if(id == 4) { // cambio sati
-                mMainFragment.changeBackground(arg2);
+                mMainFragment.changeStatus(arg2);
 
                 switch (arg2) {
                     case HitmeGame.STANDBY:
                         mMainFragment.standby();
-
                         break;
                     case HitmeGame.PREMATCH:
                         mMainFragment.preMatch();
-
                         break;
                     case HitmeGame.STARTMATCH:
-
                         break;
                     case HitmeGame.GAMEOVER:
-
                         break;
                 }
             }
-            else if(id == 5){  // new
+            else if(id == 5){  // new posizione
                 mMainFragment.arrow(arg2);
             }
             else if(id == 6) { // notifyHit
                 mMainFragment.hitOk(arg2);
+                mSounds.playSbarbyHitSound();
             }
             else if(id == 7) { // notifyMiss
                 mMainFragment.hitMissed(arg2);
+                mSounds.playSbarbyMissSound();
             }
         }
     };
 
 
     public void langButtonPressed(int lang){
-
-        Log.i("HMActivity.buttonPres", "langButtonPressed " + lang);
-
         if(mHitmeGame == null || mHitmeGame.isTerminated()) {
             mHitmeGame = new HitmeGame(this, handler);
             mGames.add(mHitmeGame);
             mHitmeGame.start();
         }
-        else{
+        else {
             mHitmeGame.moveRecieved(lang);
-            mSounds.playSbarbySound();
         }
     }
 
